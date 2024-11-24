@@ -1,0 +1,77 @@
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    {% include 'Header.html' %} <!-- Include the Header component -->
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Sign In Section -->
+            <div class="col-md-6">
+                <h4 class="text-center mb-4">Sign In</h4>
+                <form method="POST" action="{% url 'sign_in' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Username Input -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter your email"
+                            value="{{ form.email.value|default:'' }}"
+                            required
+                        />
+                    </div>
+                    
+                    <!-- Password Input -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        class="btn btn-dark w-100"
+                        style = "background-color: white;
+                        color: black;"
+                    >
+                        Sign In
+                    </button>
+                    
+                    <!-- Error Message -->
+                    {% if errorMessage %}
+                        <p class="text-danger mt-3 text-center">{{ errorMessage }}</p>
+                    {% endif %}
+                </form>
+            </div>
+
+            <!-- Sign Up Section -->
+            <div class="col-md-6">
+                {% include 'SignUp.html' %} 
+            </div>
+
+        </div>
+    </div>
+    
+    {% bootstrap_javascript %}
+</body>
+</html>

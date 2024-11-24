@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %} {% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order In Progress</title>
+    {% bootstrap_css %}
+  </head>
+  <body>
+    {% include 'Header.html' %}
+
+    <div class="container my-5">
+      <h2>Your Order in Process</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item.product.proname }}</td>
+            <!-- Use correct field names -->
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.product.price|floatformat:2 }}</td>
+            <td>${{ item.total_price|floatformat:2 }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">Your order is empty.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <button class="btn btn-dark" onclick="submitOrder()">
+        Submit Order
+      </button>
+    </div>
+
+    {% bootstrap_javascript %}
+    <script>
+      function submitOrder() {
+        fetch("{% url 'submit_order' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Order submitted successfully!");
+              window.location.href = "{% url 'order_summary' %}"; // Redirect to the order summary page
+            } else {
+              alert("Failed to submit the order.");
+            }
+          })
+          .catch((error) => {
+            alert("Error submitting order: " + error.message);
+          });
+      }
+    </script>
+  </body>
+</html>

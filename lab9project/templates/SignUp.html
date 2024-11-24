@@ -1,0 +1,128 @@
+{% load django_bootstrap5 %}
+{% load static %}
+
+<div>
+    
+    <h4 class="text-center">Sign Up</h4>
+    <form method="POST" action="{% url 'SignUp' %}">
+        {% csrf_token %}
+
+        <!-- User Type Selection -->
+        <div class="mb-3">
+            <label class="form-check me-3">
+                <input
+                    type="radio"
+                    id="customer"
+                    name="userType"
+                    value="customer"
+                    class="form-check-input"
+                    onchange="toggleAdditionalFields()"
+                    required
+                />
+                <span class="ms-1">Customer</span>
+            </label>
+            <label class="form-check">
+                <input
+                    type="radio"
+                    id="admin"
+                    name="userType"
+                    value="admin"
+                    class="form-check-input"
+                    onchange="toggleAdditionalFields()"
+                />
+                <span class="ms-1">Admin</span>
+            </label>
+        </div>
+
+        <!-- Username Field -->
+        <div class="mb-3">
+            <input
+                type="text"
+                name="User_Name"
+                class="form-control"
+                placeholder="Username"
+                value="{{ formData.User_Name|default:'' }}"
+                required
+            />
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-3">
+            <input
+                type="password"
+                name="Password"
+                class="form-control"
+                placeholder="Password"
+                value="{{ formData.Password|default:'' }}"
+                required
+            />
+        </div>
+
+        <!-- Email Address Field -->
+        <div class="mb-3">
+            <input
+                type="email"
+                name="Email_Address"
+                class="form-control"
+                placeholder="Email Address"
+                value="{{ formData.Email_Address|default:'' }}"
+                required
+            />
+        </div>
+
+        <!-- Phone Number Field -->
+        <div class="mb-3">
+            <input
+                type="tel"
+                name="Phone_Number"
+                class="form-control"
+                placeholder="Phone Number"
+                value="{{ formData.Phone_Number|default:'' }}"
+                required
+            />
+        </div>
+
+        <!-- Additional Fields for Customer -->
+        <div id="customerFields" style="display: none;">
+            <div class="mb-3">
+                <input
+                    type="text"
+                    name="Bank_Account"
+                    class="form-control"
+                    placeholder="Bank Account"
+                    value="{{ formData.Bank_Account|default:'' }}"
+                />
+            </div>
+            <div class="mb-3">
+                <input
+                    type="text"
+                    name="Home_Address"
+                    class="form-control"
+                    placeholder="Home Address"
+                    value="{{ formData.Home_Address|default:'' }}"
+                />
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+            type="submit"
+            class="btn btn-dark w-100"
+        >
+            Sign Up
+        </button>
+    </form>
+</div>
+
+<script>
+    function toggleAdditionalFields() {
+        const customerFields = document.getElementById('customerFields');
+        const isCustomer = document.getElementById('customer').checked;
+
+        if (isCustomer) {
+            customerFields.style.display = 'block';
+        } else {
+            customerFields.style.display = 'none';
+        }
+    }
+</script>

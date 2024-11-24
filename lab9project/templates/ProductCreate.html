@@ -1,0 +1,100 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Product</title>
+    {% bootstrap_css %}
+    <script>
+        function toggleFields() {
+            const category = document.getElementById('id_category').value;
+            const colorField = document.getElementById('color_field');
+            const sellByField = document.getElementById('sell_by_field');
+
+            if (category === 'GENERAL_MERCHANDISE') {
+                colorField.style.display = 'block';
+                sellByField.style.display = 'none';
+            } else if (category === 'FOOD_BEVERAGE') {
+                colorField.style.display = 'none';
+                sellByField.style.display = 'block';
+            }
+        }
+    </script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #sell_by_field {
+            display: none; /* Hide Sell By field initially */
+        }
+    </style>
+</head>
+<body>
+    {% include 'Header.html' %} <!-- Include the Header component -->
+
+    <div class="container mt-5">
+        <h3>Create New Product</h3>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3 width">
+                <label for="id_proname">Product Name</label>
+                {{ form.proname }}
+
+            </div>
+            <div class="mb-3">
+                <label for="id_brand">Brand</label>
+                {{ form.brand }}
+            </div>
+            <div class="mb-3">
+                <label for="id_cost">Cost</label>
+                {{ form.cost }}
+            </div>
+            <div class="mb-3">
+                <label for="id_price">Price</label>
+                {{ form.price }}
+            </div>
+            <div class="mb-3">
+                <label for="id_prodescription">Description</label>
+                {{ form.prodescription }}
+            </div>
+            <div class="mb-3">
+                <label for="id_category">Category</label>
+                {{ form.category }}
+            </div>
+            <div class="mb-3">
+                <label for="id_image">Image URL</label>
+                {{ form.image }}
+            </div>
+            <div class="mb-3">
+                <label for="id_quantity_available">Quantity Available</label>
+                {{ form.quantity_available }}
+            </div>
+
+            <!-- Color Field, visible by default -->
+            <div id="color_field" class="mb-3">
+                <label for="id_color">Color</label>
+                {{ form.color }}
+            </div>
+
+            <!-- Sell By Field, hidden by default -->
+            <div id="sell_by_field" class="mb-3">
+                <label for="id_sell_by">Sell By Date</label>
+                {{ form.sell_by }}
+            </div>
+
+            <button type="submit" class="btn btn-dark mt-3">Save Product</button>
+        </form>
+    </div>
+    {% bootstrap_javascript %}
+    <script>
+        // Initialize the fields based on the default category (General Merchandise)
+        document.addEventListener('DOMContentLoaded', toggleFields);
+        // Update fields whenever the category changes
+        document.getElementById('id_category').addEventListener('change', toggleFields);
+    </script>
+</body>
+</html>

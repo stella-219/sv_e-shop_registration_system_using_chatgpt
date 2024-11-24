@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %} {% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ product.proname }}</title>
+    {% bootstrap_css %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      .star {
+        color: gold;
+        margin-right: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'Header.html' %}
+
+    <div class="container my-5">
+      <div class="row">
+        <!-- Left Section - Product Image -->
+        <div class="col-md-6 text-center">
+          <img
+            src="{{ product.image }}"
+            alt="{{ product.proname|default:'Product Image' }}"
+            class="img-fluid"
+            style="max-width: 400px; height: auto"
+          />
+        </div>
+
+        <!-- Right Section - Product Details -->
+        <div class="col-md-6">
+          <h2>{{ product.proname }}</h2>
+          <p class="text-muted">{{ product.brand }}</p>
+          <p>{{ product.prodescription }}</p>
+          <h4 class="text-dark">${{ product.price|floatformat:2 }}</h4>
+
+          <div class="my-4">
+            <form
+              id="add-to-order-form"
+              method="POST"
+              action="{% url 'add_to_order' product.product_id %}"
+            >
+              {% csrf_token %}
+              <label for="quantity" class="form-label">Quantity</label>
+              <select id="quantity" name="quantity" class="form-select w-50">
+                {% for i in quantity_range %}
+                <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="btn btn-dark btn-lg mt-3">
+                Add to Order
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <div class="container my-5">
+      <h4 class="mb-4">Customer Reviews</h4>
+      <hr />
+      {% if product_ratings %} {% for rating in product_ratings %}
+      <div class="mb-3">
+        <div class="d-flex align-items-center mb-1">
+          {% for i in rating.stars %}
+          <i class="fas fa-star star"></i>
+          {% endfor %}
+        </div>
+        <p>{{ rating.comments }}</p>
+      </div>
+      {% endfor %} {% else %}
+      <p>No reviews for this product yet.</p>
+      {% endif %}
+    </div>
+
+    {% bootstrap_javascript %}
+  </body>
+</html>

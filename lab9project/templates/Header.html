@@ -1,0 +1,122 @@
+<!-- Header.html -->
+
+{% load django_bootstrap5 %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>SV E-Shop Registration System</title>
+
+    <!-- Bootstrap 5 CSS and Icons -->
+    {% bootstrap_css %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <!-- Top Contact Bar -->
+    <div class="text-black py-2" style="background-color: #ffe6e6">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="text-secondary d-flex align-items-center">
+            <span class="me-3"
+              ><i class="bi bi-telephone me-2"></i>(666) 666 - 6666</span
+            >
+            <span><i class="bi bi-envelope me-2"></i>sveshop@neu.com</span>
+          </div>
+          <div class="text-secondary fw-bold">
+            Free standard shipping on any orders before 12/31
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img
+            src="https://storage.googleapis.com/eshop_product_images/logo_white.jpg"
+            height="60"
+            alt="SV E-Shop Logo"
+          />
+          <span class="fw-bold text-secondary ms-2" style="font-size: 1.25rem"
+            >SV E-Shop Registration System Using ChatGPT</span
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'order_history' %}"
+                >Orders</a
+              >
+            </li>
+          </ul>
+
+          <!-- Display Sign In/Sign Up button when not sign in or Welcome back, user name when user sign in -->
+          {% if request.session.user_id %}
+          <div class="ms-3">
+            <span class="text-danger"
+              >Welcome back, {{ request.session.user_name }}</span
+            >
+            <a href="{% url 'sign_out' %}">
+              <button
+                style="
+                  background-color: white;
+                  color: black;
+                  border: 1px solid black;
+                  border-radius: 50px;
+                  padding: 10px 20px;
+                  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                  font-size: 16px;
+                  cursor: pointer;
+                "
+              >
+                Sign Out
+              </button>
+            </a>
+          </div>
+          {% else %}
+          <a href="{% url 'sign_in' %}">
+            <button
+              class="ms-3"
+              style="
+                background-color: white;
+                color: black;
+                border: 1px solid black;
+                border-radius: 50px;
+                padding: 10px 20px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                font-size: 16px;
+                cursor: pointer;
+              "
+            >
+              Sign In / Sign Up
+            </button>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content specific to this template goes here -->
+
+    <!-- Bootstrap JavaScript -->
+    {% bootstrap_javascript %}
+  </body>
+</html>

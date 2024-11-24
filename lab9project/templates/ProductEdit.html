@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    {% include 'Header.html' %}
+
+    <div class="container my-5">
+        <h3>Edit Product</h3>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Product Name -->
+            <div class="mb-3">
+                <label for="proname">Product Name</label>
+                <input type="text" id="proname" name="proname" class="form-control" value="{{ product.proname }}" required>
+            </div>
+
+            <!-- Brand -->
+            <div class="mb-3">
+                <label for="brand">Brand</label>
+                <input type="text" id="brand" name="brand" class="form-control" value="{{ product.brand }}">
+            </div>
+
+            <!-- Cost -->
+            <div class="mb-3">
+                <label for="cost">Cost</label>
+                <input type="number" id="cost" name="cost" class="form-control" step="0.01" value="{{ product.cost }}">
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" class="form-control" step="0.01" value="{{ product.price }}">
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label for="prodescription">Description</label>
+                <textarea id="prodescription" name="prodescription" class="form-control">{{ product.prodescription }}</textarea>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
+                <label for="category">Category</label>
+                <select id="category" name="category" class="form-select" required>
+                    <option value="FOOD_BEVERAGE" {% if product.category == "FOOD_BEVERAGE" %}selected{% endif %}>Food & Beverage</option>
+                    <option value="GENERAL_MERCHANDISE" {% if product.category == "GENERAL_MERCHANDISE" %}selected{% endif %}>General Merchandise</option>
+                </select>
+            </div>
+
+            <!-- Additional Fields Based on Category -->
+            {% if product.category == "FOOD_BEVERAGE" %}
+                <div class="mb-3">
+                    <label for="sell_by">Sell By Date</label>
+                    <input type="date" id="sell_by" name="sell_by" class="form-control" value="{{ food_beverage.sell_by }}">
+                </div>
+            {% elif product.category == "GENERAL_MERCHANDISE" %}
+                <div class="mb-3">
+                    <label for="color">Color</label>
+                    <input type="text" id="color" name="color" class="form-control" value="{{ general_merchandise.color }}">
+                </div>
+            {% endif %}
+
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-dark mt-3">Save Changes</button>
+        </form>
+    </div>
+
+    {% bootstrap_javascript %}
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            width: 250px;
+            height: 350px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        .product-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .icon-container {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="product-container">
+            {% for product in products %}
+            <div class="product-card">
+                <h2 style="font-size: 1.0em; margin-bottom: 10px;">{{ product.name|default:"No Name" }}</h2>
+                <p style="font-size: 1.0em; font-weight: bold; color: #333; margin-bottom: 10px;">
+                    ${{ product.price|floatformat:2|default:"N/A" }}
+                </p>
+                <div class="icon-container">
+                    {% if product.Product_ID %}
+                        <a href="{% url 'product_detail' product.Product_ID %}" title="View Details" class="text-primary">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+                        <img src="{{ product.image }}" 
+                        alt="{{ product.name|default:'Product Image' }}" 
+                        class="product-image">
+                    {% endif %}
+                    <i class="fas fa-edit" style="cursor: pointer; color:black;" title="Edit Product"></i>
+                    <i class="fas fa-trash" style="cursor: pointer; color: red;" title="Delete Product"></i>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% bootstrap_javascript %}
+</body>
+</html>
